@@ -5,8 +5,8 @@ import (
 	"ws_server/services"
 )
 
-func Router() *http.ServeMux {
-	server := services.NewServer()
+func Router(addr string) *http.ServeMux {
+	server := services.NewServer(addr)
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /ws", server.HandleClient)

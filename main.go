@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -12,10 +13,14 @@ import (
 func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("ERROR LOADING .ENV")
+		fmt.Printf("ERROR")
 	}
 
 	port := os.Getenv("PORT")
-	r := router.Router()
+	redisAddr := os.Getenv("REDIS_ADDR")
+	r := router.Router(redisAddr)
 
-	http.ListenAndServe(port, r)
+	if err := http.ListenAndServe(port, r); err != nil {
+		log.Fatal("ERROR WHILE SERVING HTTP")
+	}
 }
